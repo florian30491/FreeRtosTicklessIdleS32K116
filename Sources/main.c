@@ -62,15 +62,18 @@
 	  }
   }
 
- void PreSleepProcessing(void)
+ void PreSleepProcessing(uint32_t xModifiableIdleTime)
  {
-
+	 /* sleep mode */
+	 //POWER_SYS_SetMode(1, POWER_MANAGER_POLICY_AGREEMENT);
  }
 
- void PostSleepProcessing(void)
+ void PostSleepProcessing(uint32_t xModifiableIdleTime)
  {
-
+	 /* Run mode */
+	 //POWER_SYS_SetMode(0, POWER_MANAGER_POLICY_AGREEMENT);
  }
+
 
 /*! 
   \brief The main function for the project.
@@ -87,20 +90,23 @@ int main(void)
 	CLOCK_SYS_Init(g_clockManConfigsArr, CLOCK_MANAGER_CONFIG_CNT, g_clockManCallbacksArr, CLOCK_MANAGER_CALLBACK_CNT);
 	CLOCK_SYS_UpdateConfiguration(0U, CLOCK_MANAGER_POLICY_AGREEMENT);
 
+	/* initialize LPIT */
+	LPIT_DRV_Init(INST_LPIT1, &lpit1_InitConfig);
+
 	PINS_DRV_Init(NUM_OF_CONFIGURED_PINS, g_pin_mux_InitConfigArr);
 
 	POWER_SYS_Init(powerConfigsArr, POWER_MANAGER_CONFIG_CNT, powerStaticCallbacksConfigsArr, POWER_MANAGER_CALLBACK_CNT);
 
 	/* Run mode */
-	POWER_SYS_SetMode(0, POWER_MANAGER_POLICY_AGREEMENT);
+	//POWER_SYS_SetMode(0, POWER_MANAGER_POLICY_AGREEMENT);
 
 	/* sleep mode */
-	POWER_SYS_SetMode(1, POWER_MANAGER_POLICY_AGREEMENT);
+	//POWER_SYS_SetMode(1, POWER_MANAGER_POLICY_AGREEMENT);
 
+	/* create test task */
 	xTaskCreate(TestTask, "TestTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 
-
-
+	/* start scheduler */
 	vTaskStartScheduler();
 
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
