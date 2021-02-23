@@ -25,10 +25,52 @@
 
 /* Including necessary module. Cpu.h contains other modules needed for compiling.*/
 #include "Cpu.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
   volatile int exit_code = 0;
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
+
+  static uint8_t DefaultRamHeap[512];
+  static uint8_t __attribute__ ((used,section(".myHeapSection"))) HeapInOwnSection[6244] __attribute__ ((aligned (4))); /* placed in in no_init section inside SRAM_LOWER */
+  static HeapRegion_t xHeapRegions[] =
+  {
+      {&HeapInOwnSection[0], sizeof(HeapInOwnSection)},
+      {&DefaultRamHeap[0], sizeof(DefaultRamHeap)},
+      {NULL, 0}
+  };
+
+  void TestTask(void *parameter)
+  {
+	  static bool status = false;
+
+	  for(;;)
+	  {
+		  vTaskDelay(pdMS_TO_TICKS(250));
+
+		  if(status == false)
+		  {
+			  PINS_DRV_WritePin(RGB_BLUE_PORT, RGB_BLUE_PIN, 0);
+			  status = true;
+		  }
+		  else
+		  {
+			  PINS_DRV_WritePin(RGB_BLUE_PORT, RGB_BLUE_PIN, 1);
+			  status = false;
+		  }
+	  }
+  }
+
+ void PreSleepProcessing(void)
+ {
+
+ }
+
+ void PostSleepProcessing(void)
+ {
+
+ }
 
 /*! 
   \brief The main function for the project.
@@ -39,6 +81,27 @@
 int main(void)
 {
   /* Write your local variable definition here */
+
+	vPortDefineHeapRegions(xHeapRegions);
+
+	CLOCK_SYS_Init(g_clockManConfigsArr, CLOCK_MANAGER_CONFIG_CNT, g_clockManCallbacksArr, CLOCK_MANAGER_CALLBACK_CNT);
+	CLOCK_SYS_UpdateConfiguration(0U, CLOCK_MANAGER_POLICY_AGREEMENT);
+
+	PINS_DRV_Init(NUM_OF_CONFIGURED_PINS, g_pin_mux_InitConfigArr);
+
+	POWER_SYS_Init(powerConfigsArr, POWER_MANAGER_CONFIG_CNT, powerStaticCallbacksConfigsArr, POWER_MANAGER_CALLBACK_CNT);
+
+	/* Run mode */
+	POWER_SYS_SetMode(0, POWER_MANAGER_POLICY_AGREEMENT);
+
+	/* sleep mode */
+	POWER_SYS_SetMode(1, POWER_MANAGER_POLICY_AGREEMENT);
+
+	xTaskCreate(TestTask, "TestTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+
+
+
+	vTaskStartScheduler();
 
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   #ifdef PEX_RTOS_INIT

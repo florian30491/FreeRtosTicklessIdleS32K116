@@ -7,7 +7,7 @@
 **     Version     : Component 1.2.0, Driver 1.4, CPU db: 3.00.000
 **     Repository  : SDK_S32K1xx_15
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-02-23, 13:22, # CodeGen: 0
+**     Date/Time   : 2021-02-23, 14:27, # CodeGen: 11
 **     Abstract    :
 **
 **     Settings    :
@@ -207,18 +207,18 @@
 **                  Direction                              : <Automatic>
 **                  Pin GPIO5                              : <Automatic>
 **                  Direction                              : <Automatic>
-**                  Pin GPIO15                             : <Automatic>
-**                  Direction                              : <Automatic>
-**                  Pin GPIO16                             : <Automatic>
-**                  Direction                              : <Automatic>
+**                  Pin GPIO15                             : RGB_GREEN
+**                  Direction                              : Output
+**                  Pin GPIO16                             : RGB_RED
+**                  Direction                              : Output
 **                Custom name                              : PTE
 **                PTE                                      : 
 **                  Pin GPIO4                              : <Automatic>
 **                  Direction                              : <Automatic>
 **                  Pin GPIO5                              : <Automatic>
 **                  Direction                              : <Automatic>
-**                  Pin GPIO8                              : <Automatic>
-**                  Direction                              : <Automatic>
+**                  Pin GPIO8                              : RGB_BLUE
+**                  Direction                              : Output
 **                  Pin GPIO9                              : <Automatic>
 **                  Direction                              : <Automatic>
 **              Peripheral Type JTAG                       : 
@@ -416,7 +416,7 @@
 **                Initial Value Field                      : <Automatic>
 **                Digital Filter Field                     : <Automatic>
 **              Pin 10: PTD16                              : 
-**                Custom name, Signal name                 : PTD16
+**                Custom name, Signal name                 : RGB_RED
 **                Interrupt Status Field                   : <Automatic>
 **                Interrupt Configuration Field            : <Automatic>
 **                Pin Mux Field                            : <Automatic>
@@ -424,10 +424,10 @@
 **                Drive Strength Field                     : <Automatic>
 **                Pull Enable Field                        : <Automatic>
 **                Pull Select Field                        : <Automatic>
-**                Initial Value Field                      : <Automatic>
+**                Initial Value Field                      : Low
 **                Digital Filter Field                     : <Automatic>
 **              Pin 11: PTD15                              : 
-**                Custom name, Signal name                 : PTD15
+**                Custom name, Signal name                 : RGB_GREEN
 **                Interrupt Status Field                   : <Automatic>
 **                Interrupt Configuration Field            : <Automatic>
 **                Pin Mux Field                            : <Automatic>
@@ -435,7 +435,7 @@
 **                Drive Strength Field                     : <Automatic>
 **                Pull Enable Field                        : <Automatic>
 **                Pull Select Field                        : <Automatic>
-**                Initial Value Field                      : <Automatic>
+**                Initial Value Field                      : Low
 **                Digital Filter Field                     : <Automatic>
 **              Pin 12: PTE9                               : 
 **                Custom name, Signal name                 : PTE9
@@ -448,14 +448,14 @@
 **                Initial Value Field                      : <Automatic>
 **                Digital Filter Field                     : <Automatic>
 **              Pin 13: PTE8                               : 
-**                Custom name, Signal name                 : PTE8
+**                Custom name, Signal name                 : RGB_BLUE
 **                Interrupt Status Field                   : <Automatic>
 **                Interrupt Configuration Field            : <Automatic>
 **                Pin Mux Field                            : <Automatic>
 **                Lock Field                               : <Automatic>
 **                Pull Enable Field                        : <Automatic>
 **                Pull Select Field                        : <Automatic>
-**                Initial Value Field                      : <Automatic>
+**                Initial Value Field                      : Low
 **                Digital Filter Field                     : <Automatic>
 **              Pin 14: PTB5                               : 
 **                Custom name, Signal name                 : PTB5
@@ -860,8 +860,21 @@
 /* MODULE pin_mux. */
 #include "pins_driver.h"
 
+/*! @brief User Pin definitions for PTD15 */
+#define RGB_GREEN_PORT PTD
+#define RGB_GREEN_PIN  15U
+/*! @brief User Pin definitions for PTD16 */
+#define RGB_RED_PORT PTD
+#define RGB_RED_PIN  16U
+/*! @brief User Pin definitions for PTE8 */
+#define RGB_BLUE_PORT PTE
+#define RGB_BLUE_PIN  8U
 
-/*! @brief No pin was configured different with reset value */
+/*! @brief User number of configured pins */
+#define NUM_OF_CONFIGURED_PINS 3
+
+/*! @brief User configuration structure */
+extern pin_settings_config_t g_pin_mux_InitConfigArr[NUM_OF_CONFIGURED_PINS];
 
 /* END pin_mux. */
 #endif /* #ifndef pin_mux_H */

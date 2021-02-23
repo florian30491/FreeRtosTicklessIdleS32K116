@@ -71,46 +71,5 @@
       <EmptySection_DummyValue />
     </Events>
   </Bean>
-  <Bean name="FreeRTOS" type="FreeRTOS">
-    <Enabled v="Y" />
-    <Properties>
-      <Component_name v="FreeRTOS" />
-      <FreeRTOS_version v="&amp;quot;V10.0.1&amp;quot;" />
-      <Component_version v="S32K144_SDK01" />
-    </Properties>
-    <Methods>
-      <EmptySection_DummyValue />
-    </Methods>
-    <Events>
-      <EmptySection_DummyValue />
-    </Events>
-  </Bean>
-  <Bean name="pwrMan1" type="power_manager">
-    <Enabled v="Y" />
-    <Properties>
-      <Component_name v="pwrMan1" />
-      <Component_version v="S32K144_SDK01" />
-    </Properties>
-    <Methods>
-      <EmptySection_DummyValue />
-    </Methods>
-    <Events>
-      <EmptySection_DummyValue />
-    </Events>
-  </Bean>
-  <Bean name="lpit1" type="lpit">
-    <Enabled v="Y" />
-    <Properties>
-      <Component_name v="lpit1" />
-      <Device v="LPIT0" />
-      <Component_version v="S32K144_SDK01" />
-    </Properties>
-    <Methods>
-      <EmptySection_DummyValue />
-    </Methods>
-    <Events>
-      <EmptySection_DummyValue />
-    </Events>
-  </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>
 
